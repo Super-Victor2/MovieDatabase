@@ -6,6 +6,8 @@ window.addEventListener('load', () => {
     setupCarousel();
 });
 
+
+
 //Denna funktion skapar funktionalitet för karusellen
 function setupCarousel() {
     console.log('carousel');
