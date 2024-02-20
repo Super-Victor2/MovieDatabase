@@ -6,8 +6,6 @@ window.addEventListener('load', () => {
     setupCarousel();
 });
 
-
-
 //Denna funktion skapar funktionalitet för karusellen
 function setupCarousel() {
     console.log('carousel');
@@ -19,9 +17,9 @@ function setupCarousel() {
             const activeSlide = slides.querySelector('[data-active]');
             let newIndex = [...slides.children].indexOf(activeSlide) + offset;
             
-            if(newIndex < 0) {
+            if (newIndex < 0) {
                 newIndex = slides.children.length - 1;
-            } else if( newIndex >= slides.children.length) {
+            } else if (newIndex >= slides.children.length) {
                 newIndex = 0;
             }
 
@@ -29,4 +27,11 @@ function setupCarousel() {
             delete activeSlide.dataset.active;
         });
     });
+
+    const slidesContainer = document.querySelector('[data-carousel]');
+    const slides = slidesContainer.querySelector('[data-slides]');
+    const randomIndex = Math.floor(Math.random() * slides.children.length);
+    slides.children[randomIndex].dataset.active = true;
 }
+
+setupCarousel();
