@@ -34,4 +34,48 @@ function setupCarousel() {
     slides.children[randomIndex].dataset.active = true;
 }
 
+async function getMovies() {
+    try {
+      const response = await fetch('https://santosnr6.github.io/Data/movies.json');
+      if (!response.ok) {
+        throw new Error('Response was not ok');
+    }
+    const movies = await response.json();
+    console.log(movies);
+
+    const cardCointainerRef = document.querySelector('.popular__card-container')
+    if (!cardCointainerRef) {
+        throw new error('Section not found')
+    } console.log(cardCointainerRef)
+
+
+    movies.forEach(movies => {
+        const titleRef = document.createElement('h3')
+        titleRef.classList.add('movieTitles')
+        titleRef.textContent = `${movies.title}`
+
+        const imageRef = document.createElement('img')
+        imageRef.src = `${movies.poster}`
+        imageRef.classList.add('image')
+
+        const starRef = document.createElement('i')
+        starRef.classList.add('fa-solid', 'fa-star', 'star')
+
+        const cardRef = document.createElement('div')
+        cardRef.classList.add('card')
+
+        cardRef.appendChild(titleRef)
+        cardRef.appendChild(starRef)
+        cardRef.appendChild(imageRef)
+        cardCointainerRef.appendChild(cardRef)
+    })
+
+    } catch (error) {
+      console.error('There was a problem:', error);
+    }
+}
+  
+getMovies();
+
+
 setupCarousel();

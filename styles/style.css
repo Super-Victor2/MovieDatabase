@@ -6,6 +6,8 @@
     --primary-grey: #1A1A1A;
     --text-yellow: #F5C518;
     --text-blue: #5595E7;
+
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Base */
@@ -136,7 +138,45 @@ body {
 
 /* Här skriver ni er CSS */
 
+.popular__card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    justify-items: center;
+    gap: 15px;
+}
 
+.card {
+    background-color: var(--primary-grey);
+    border-radius: 10px;
+    position: relative;
+}
+
+.popular__title {
+    color: white;
+    text-align: center;
+    margin: 3em;
+}
+
+.movieTitles {
+    color: white;
+    margin: 5px;
+    text-align: center;
+}
+
+
+.star {
+    color: white;
+    font-size: 30px;
+    margin: 15px;    
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
+.star:hover {
+    color: gold;
+}
 
 
 
