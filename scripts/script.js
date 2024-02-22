@@ -4,6 +4,8 @@ window.addEventListener('load', () => {
     console.log('load');
     //Förslagsvis anropar ni era funktioner som skall sätta lyssnare, rendera objekt osv. härifrån
     setupCarousel();
+
+    localStorage.setItem('movies', movies)
 });
 
 //Denna funktion skapar funktionalitet för karusellen
@@ -61,6 +63,10 @@ async function getMovies() {
         const starRef = document.createElement('i')
         starRef.classList.add('fa-solid', 'fa-star', 'star')
 
+        starRef.addEventListener('click', () => {
+            starRef.classList.toggle('starClicked')
+        })
+
         const cardRef = document.createElement('div')
         cardRef.classList.add('card')
 
@@ -76,6 +82,10 @@ async function getMovies() {
 }
   
 getMovies();
+
+function saveMovies() {
+    
+}
 
 
 setupCarousel();
