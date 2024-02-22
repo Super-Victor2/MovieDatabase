@@ -3,14 +3,14 @@
 window.addEventListener('load', () => {
     console.log('load');
     //Förslagsvis anropar ni era funktioner som skall sätta lyssnare, rendera objekt osv. härifrån
-    setupCarousel();
-
-    localStorage.setItem('movies', movies)
+    //setupCarousel();
+    //localStorage.setItem('movies', JSON.stringify(movies));
 });
 
 //Denna funktion skapar funktionalitet för karusellen
-function setupCarousel() {
-    console.log('carousel');
+function setupCarousel(movies) {
+    const slidesContainer = document.querySelector('[data-carousel]');
+    const slides = slidesContainer.querySelector('[data-slides]');
     const buttons = document.querySelectorAll('[data-carousel-btn]');
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -29,11 +29,21 @@ function setupCarousel() {
             delete activeSlide.dataset.active;
         });
     });
+    // Clear existing slides
 
-    const slidesContainer = document.querySelector('[data-carousel]');
-    const slides = slidesContainer.querySelector('[data-slides]');
-    const randomIndex = Math.floor(Math.random() * slides.children.length);
-    slides.children[randomIndex].dataset.active = true;
+    const carouselSlides = document.querySelectorAll('.carousel__slide');
+
+    // Skapa en iframe för varje film i karusellen
+    movies.forEach((movie, index) => {
+        const iframe = document.createElement('iframe');
+        iframe.classList.add('video-source');
+        iframe.src = movie.trailer_link;
+    
+        const slideIndex = index % carouselSlides.length;
+        carouselSlides[slideIndex].appendChild(iframe);
+    });
+
+    
 }
 
 async function getMovies() {
@@ -45,31 +55,45 @@ async function getMovies() {
     const movies = await response.json();
     console.log(movies);
 
+    // Få in randomiserat med filmer i trailern
+    const randomMovies = selectRandomMovies(movies, 5);
+    // Och renderar dom
+    setupCarousel(randomMovies);
+
+
+    // 20 Filmer som syns på första sidan
     const cardCointainerRef = document.querySelector('.popular__card-container')
     if (!cardCointainerRef) {
         throw new error('Section not found')
-    } console.log(cardCointainerRef)
+    }
 
-
+    // För varje film som tas upp så syns, title, poster och stjärnan
     movies.forEach(movies => {
+
+        //skapar titel till de 20 bilderna
         const titleRef = document.createElement('h3')
         titleRef.classList.add('movieTitles')
         titleRef.textContent = `${movies.title}`
 
+        // Skapa poster till de 20 bilderna
         const imageRef = document.createElement('img')
         imageRef.src = `${movies.poster}`
         imageRef.classList.add('image')
 
-        const starRef = document.createElement('i')
-        starRef.classList.add('fa-solid', 'fa-star', 'star')
-
+        // Stjärnan till de 20 bilderna
+        const starRef = document.createElement('i');
+        starRef.classList.add('fa-solid', 'fa-star', 'star');
         starRef.addEventListener('click', () => {
+            // Spara film som har klickats på och lägg till klass
+            saveMovieToLocalStorage(movies);
             starRef.classList.toggle('starClicked')
-        })
+        });
 
+        // Skapat ett kort som de läggs i
         const cardRef = document.createElement('div')
         cardRef.classList.add('card')
 
+        // Lägger till dom på rätt ställe
         cardRef.appendChild(titleRef)
         cardRef.appendChild(starRef)
         cardRef.appendChild(imageRef)
@@ -80,12 +104,33 @@ async function getMovies() {
       console.error('There was a problem:', error);
     }
 }
-  
-getMovies();
 
-function saveMovies() {
-    
+function selectRandomMovies(movies, count) {
+    const shuffledMovies = movies.sort(() => Math.random() - 0.5);
+    return shuffledMovies.slice(0, count);
+}
+
+// Function to save movie to localStorage
+function saveMovieToLocalStorage(movie) {
+    // Check if localStorage already has saved movies
+    let savedMovies = localStorage.getItem('savedMovies');
+    if (!savedMovies) {
+        // If no saved movies, initialize an empty array
+        savedMovies = [];
+    } else {
+        // If saved movies exist, parse the JSON string to array
+        savedMovies = JSON.parse(savedMovies);
+    }
+
+    // Add the clicked movie to the saved movies array
+    savedMovies.push(movie);
+
+    // Convert the saved movies array back to JSON and store in localStorage
+    localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+
+    console.log('Movie saved to localStorage:', movie);
 }
 
 
+getMovies();
 setupCarousel();

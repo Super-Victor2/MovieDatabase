@@ -136,7 +136,13 @@ body {
     right: 1rem;
 }
 
+.video-source {
+    border: 1px solid black;
+}
+
 /* Här skriver ni er CSS */
+
+/* Cards */
 
 .popular__card-container {
     display: grid;
@@ -160,8 +166,9 @@ body {
 
 .movieTitles {
     color: white;
-    margin: 5px;
+    margin: 10px;
     text-align: center;
+    font-size: 15px;
 }
 
 
@@ -180,6 +187,26 @@ body {
 
 .star:hover {
     color: gold;
+}
+
+/* Results */
+
+.results {
+    border: 1px solid white;
+
+}
+
+.results__title {
+    color: white;
+    text-align: center;
+}
+
+.results__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    justify-items: center;
+    gap: 15px;
 }
 
 
