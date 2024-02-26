@@ -5,6 +5,7 @@ window.addEventListener('load', () => {
     //Förslagsvis anropar ni era funktioner som skall sätta lyssnare, rendera objekt osv. härifrån
     //setupCarousel();
     //localStorage.setItem('movies', JSON.stringify(movies));
+    searchMovies()
 });
 
 //Denna funktion skapar funktionalitet för karusellen
@@ -108,6 +109,26 @@ async function getMovies() {
 function selectRandomMovies(movies, count) {
     const shuffledMovies = movies.sort(() => Math.random() - 0.5);
     return shuffledMovies.slice(0, count);
+}
+
+// Funktion för att söka efter filmer
+
+async function searchMovies(){
+    try {
+        const response = await fetch('http://www.omdbapi.com/?apikey=d85ec1b9&s=[söksträng]');
+        if (!response.ok) {
+          throw new Error('Response was not ok');
+    }
+    const results = await response.json();
+    console.log(results);
+    
+
+
+
+
+} catch (error) {
+    console.error('There was a problem:', error);
+  }
 }
 
 // Function to save movie to localStorage
