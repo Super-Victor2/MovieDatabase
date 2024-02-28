@@ -28,7 +28,7 @@ body {
     margin: 0 auto;
 }
 
-.d-none {
+#d-none {
     display: none;
 }
 
@@ -171,6 +171,9 @@ body {
     font-size: 15px;
 }
 
+.movieYear {
+    color: white;
+}
 
 .star {
     color: white;
@@ -191,14 +194,17 @@ body {
 
 /* Results */
 
-.results {
-    border: 1px solid white;
-
+.results-card {
+    background-color: var(--primary-grey);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
 }
 
 .results__title {
     color: white;
     text-align: center;
+    margin: 20px;
 }
 
 .results__list {
@@ -209,7 +215,11 @@ body {
     gap: 15px;
 }
 
-
+.info-card {
+    width: 100%;
+    background-color: white;
+    height: 50px;
+}
 
 /* Media Queries */
 @media screen and (max-width: 1380px) {
