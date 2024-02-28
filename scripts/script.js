@@ -2,9 +2,7 @@
 
 window.addEventListener('load', () => {
     console.log('load');
-    //Förslagsvis anropar ni era funktioner som skall sätta lyssnare, rendera objekt osv. härifrån
-    //setupCarousel();
-    //localStorage.setItem('movies', JSON.stringify(movies));
+    searchMovies()
 });
 
 //Denna funktion skapar funktionalitet för karusellen
@@ -29,7 +27,6 @@ function setupCarousel(movies) {
             delete activeSlide.dataset.active;
         });
     });
-    // Clear existing slides
 
     const carouselSlides = document.querySelectorAll('.carousel__slide');
 
@@ -94,10 +91,10 @@ async function getMovies() {
         cardRef.classList.add('card')
 
         // Lägger till dom på rätt ställe
-        cardRef.appendChild(titleRef)
-        cardRef.appendChild(starRef)
-        cardRef.appendChild(imageRef)
-        cardCointainerRef.appendChild(cardRef)
+        cardRef.appendChild(titleRef);
+        cardRef.appendChild(starRef);
+        cardRef.appendChild(imageRef);
+        cardCointainerRef.appendChild(cardRef);
     })
 
     } catch (error) {
@@ -109,6 +106,82 @@ function selectRandomMovies(movies, count) {
     const shuffledMovies = movies.sort(() => Math.random() - 0.5);
     return shuffledMovies.slice(0, count);
 }
+
+// Funktion för att söka efter filmer
+
+async function searchMovies() {
+    try {
+        // Retrieve search query from input field
+        const searchInput = document.getElementById('searchInput').value;
+
+        // Construct the API URL based on the search query
+        const apiUrl = `http://www.omdbapi.com/?apikey=d85ec1b9&s=${encodeURIComponent(searchInput)}`;
+
+        // Fetch movie data from OMDB API
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Response was not ok');
+        }
+        
+        const data = await response.json();
+        console.log(data);
+
+        // Extract movie results
+        const movies = data.Search;
+
+        // Clear previous search results
+        const resultsList = document.querySelector('#resultsList');
+        resultsList.innerHTML = ''; // Clear previous results
+
+        // Generate and display cards for each movie
+        movies.forEach(movie => {
+            const card = document.createElement('div');
+            card.classList.add('results-card');
+
+            const infoCard = document.createElement('div');
+card.appendChild(infoCard);
+
+card.addEventListener('click', () => {
+    if (infoCard.classList.contains('info-card')) { // Check if it already has the class
+        infoCard.classList.remove('info-card'); // If yes, remove the class
+    } else {
+        infoCard.classList.add('info-card'); // If not, add the class
+    }
+});
+
+
+
+            const title = document.createElement('h2');
+            title.classList.add('movieTitles')
+            title.textContent = movie.Title;
+
+            const poster = document.createElement('img');
+            poster.src = movie.Poster;
+
+            
+            card.appendChild(title);
+            card.appendChild(poster);
+
+            resultsList.appendChild(card);
+        });
+
+        // Display the displaySection
+        
+
+    } catch (error) {
+        console.error('There was a problem:', error);
+    }
+}
+
+const displaySection = document.querySelector('#d-none');
+// Add event listener to the search button click event
+document.getElementById('searchBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default form submission behavior
+    searchMovies(); // Call the searchMovies function
+    displaySection.style.display = "block";
+});
+
+
 
 // Function to save movie to localStorage
 function saveMovieToLocalStorage(movie) {
