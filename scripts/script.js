@@ -43,6 +43,7 @@ function setupCarousel(movies) {
     
 }
 
+// Få tag på filmerna
 async function getMovies() {
     try {
       const response = await fetch('https://santosnr6.github.io/Data/movies.json');
@@ -68,7 +69,7 @@ async function getMovies() {
     movies.forEach(movies => {
 
         //skapar titel till de 20 bilderna
-        const titleRef = document.createElement('h3')
+        const titleRef = document.createElement('h2')
         titleRef.classList.add('movieTitles')
         titleRef.textContent = `${movies.title}`
 
@@ -76,13 +77,12 @@ async function getMovies() {
         const imageRef = document.createElement('img')
         imageRef.src = `${movies.poster}`
         imageRef.classList.add('image')
+        imageRef.setAttribute('alt', 'Movie poster')
 
         // Stjärnan till de 20 bilderna
         const starRef = document.createElement('i');
         starRef.classList.add('fa-solid', 'fa-star', 'star');
         starRef.addEventListener('click', () => {
-            // Spara film som har klickats på och lägg till klass
-            saveMovieToLocalStorage(movies);
             starRef.classList.toggle('starClicked')
         });
 
@@ -102,22 +102,19 @@ async function getMovies() {
     }
 }
 
+// Randomisera alla filmer
 function selectRandomMovies(movies, count) {
     const shuffledMovies = movies.sort(() => Math.random() - 0.5);
     return shuffledMovies.slice(0, count);
 }
 
 // Funktion för att söka efter filmer
-
 async function searchMovies() {
     try {
-        // Retrieve search query from input field
         const searchInput = document.getElementById('searchInput').value;
 
-        // Construct the API URL based on the search query
         const apiUrl = `http://www.omdbapi.com/?apikey=d85ec1b9&s=${encodeURIComponent(searchInput)}`;
 
-        // Fetch movie data from OMDB API
         const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error('Response was not ok');
@@ -126,31 +123,83 @@ async function searchMovies() {
         const data = await response.json();
         console.log(data);
 
-        // Extract movie results
         const movies = data.Search;
 
-        // Clear previous search results
         const resultsList = document.querySelector('#resultsList');
-        resultsList.innerHTML = ''; // Clear previous results
+        resultsList.innerHTML = '';
 
-        // Generate and display cards for each movie
+        // För varje film skapas ett kort med data
         movies.forEach(movie => {
             const card = document.createElement('div');
             card.classList.add('results-card');
 
             const infoCard = document.createElement('div');
-card.appendChild(infoCard);
+            card.appendChild(infoCard);
 
-card.addEventListener('click', () => {
-    if (infoCard.classList.contains('info-card')) { // Check if it already has the class
-        infoCard.classList.remove('info-card'); // If yes, remove the class
-    } else {
-        infoCard.classList.add('info-card'); // If not, add the class
-    }
-});
+            card.addEventListener('click', async () => {
+                if (infoCard.classList.contains('info-card')) {
+                    infoCard.classList.remove('info-card');
+                    infoCard.innerHTML = '';
+                } else {
+                    infoCard.classList.add('info-card');
+                    const infoCardTitle = document.createElement('h2');
+                    infoCardTitle.classList.add('info-card__title');
 
+                    const infoCardActorTitle = document.createElement('h3');
+                    infoCardActorTitle.classList.add('info-card__title');
 
+                    const infoCardActorResult = document.createElement('p');
+                    infoCardActorResult.classList.add('info-card__result');
 
+                    const infoCardDirectorTitle = document.createElement('h3');
+                    infoCardDirectorTitle.classList.add('info-card__title');
+
+                    const infoCardDirectorResult = document.createElement('p');
+                    infoCardDirectorResult.classList.add('info-card__result');
+
+                    const infoCardGenresTitle = document.createElement('h3');
+                    infoCardGenresTitle.classList.add('info-card__title');
+
+                    const infoCardGenresResult = document.createElement('p');
+                    infoCardGenresResult.classList.add('info-card__result');
+
+                    const infoCardPlot = document.createElement('p');
+                    infoCardPlot.classList.add('info-card__plot')
+
+                    infoCard.appendChild(infoCardTitle);
+                    infoCard.appendChild(infoCardActorTitle);
+                    infoCard.appendChild(infoCardActorResult);
+                    infoCard.appendChild(infoCardDirectorTitle);
+                    infoCard.appendChild(infoCardDirectorResult);
+                    infoCard.appendChild(infoCardGenresTitle);
+                    infoCard.appendChild(infoCardGenresResult);
+                    infoCard.appendChild(infoCardPlot);
+            
+                    
+                    const imdbId = movie.imdbID; 
+            
+                    const response = await fetch(`http://www.omdbapi.com/?apikey=d85ec1b9&i=${imdbId}`);
+                    const data = await response.json();
+            
+                    if (data.Response === 'True') {
+                        infoCardTitle.textContent = data.Title;
+                        
+                        infoCardActorResult.textContent = data.Actors;
+                        infoCardActorTitle.textContent = "Actors:"
+
+                        infoCardDirectorResult.textContent = data.Director;
+                        infoCardDirectorTitle.textContent = "Directors:"
+
+                        infoCardGenresResult.textContent = data.Genre;
+                        infoCardGenresTitle.textContent = "Genres:"
+
+                        infoCardPlot.textContent = data.Plot
+                    } else {
+                        console.error('Error fetching movie information:', data.Error);
+                    }
+                }
+            });
+            
             const title = document.createElement('h2');
             title.classList.add('movieTitles')
             title.textContent = movie.Title;
@@ -165,7 +214,7 @@ card.addEventListener('click', () => {
             resultsList.appendChild(card);
         });
 
-        // Display the displaySection
+        
         
 
     } catch (error) {
@@ -173,37 +222,13 @@ card.addEventListener('click', () => {
     }
 }
 
+// Switchar mellan none och block
 const displaySection = document.querySelector('#d-none');
-// Add event listener to the search button click event
 document.getElementById('searchBtn').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent default form submission behavior
-    searchMovies(); // Call the searchMovies function
+    event.preventDefault(); 
+    searchMovies();
     displaySection.style.display = "block";
 });
-
-
-
-// Function to save movie to localStorage
-function saveMovieToLocalStorage(movie) {
-    // Check if localStorage already has saved movies
-    let savedMovies = localStorage.getItem('savedMovies');
-    if (!savedMovies) {
-        // If no saved movies, initialize an empty array
-        savedMovies = [];
-    } else {
-        // If saved movies exist, parse the JSON string to array
-        savedMovies = JSON.parse(savedMovies);
-    }
-
-    // Add the clicked movie to the saved movies array
-    savedMovies.push(movie);
-
-    // Convert the saved movies array back to JSON and store in localStorage
-    localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-
-    console.log('Movie saved to localStorage:', movie);
-}
-
 
 getMovies();
 setupCarousel();

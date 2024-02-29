@@ -149,6 +149,7 @@ body {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     justify-items: center;
+    align-items: center;
     gap: 15px;
 }
 
@@ -156,6 +157,7 @@ body {
     background-color: var(--primary-grey);
     border-radius: 10px;
     position: relative;
+    max-width: 380px;
 }
 
 .popular__title {
@@ -168,7 +170,7 @@ body {
     color: white;
     margin: 10px;
     text-align: center;
-    font-size: 15px;
+    font-size: 18px;
 }
 
 .movieYear {
@@ -199,6 +201,7 @@ body {
     border-radius: 10px;
     position: relative;
     cursor: pointer;
+    max-width: 300px;
 }
 
 .results__title {
@@ -217,22 +220,63 @@ body {
 
 .info-card {
     width: 100%;
-    background-color: white;
-    height: 50px;
+    background-color: var(--primary-grey);
+    height: 400px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: all 0.3ms ease-in-out;
+}
+
+.info-card__title {
+    color: white;
+    font-weight: 500;
+    margin: 10px;
+}
+
+.info-card__result {
+    color: white;
+    font-weight: 300;
+    margin: 10px;
+}
+
+.info-card__plot {
+    color: white;
+    font-weight: 300;
+    margin: 10px;
 }
 
 /* Media Queries */
 @media screen and (max-width: 1380px) {
     .content-wrapper {
+        width: 100%;
+    }
+
+    .popular__card-container, .results__list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        justify-items: center; 
     }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 800px) {
     .content-wrapper {
+    }
+
+    .popular__card-container, .results__list {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        justify-items: center; 
     }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 650px) {
     .content-wrapper {
+    }
+
+    .header img {
+        width: 75px;
     }
 }
