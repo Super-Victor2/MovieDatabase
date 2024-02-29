@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Movie Database</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src="https://kit.fontawesome.com/cdf8014e25.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="content-wrapper header__flex">
+            <a href="index.html"><img class="header-img" src="./res/logo.png" alt="logotype"></a>
+            <form>
+                <input id="searchInput" placeholder="Sök här..." type="text">
+                <button class="header__form-btn" id="searchBtn">Search</button>
+            </form>       
+            <button class="header__fav-btn" id="favBtn">Favorites</button> 
+        </div>
+    </header>
+
+    <section class="favorites-container d-none" id="favoritesContainer">
+        <div class="content-wrapper favorites" id="favorites">
+            
+        </div>
+    </section>
+
+    <!-- Search Results d-none -->
+    <section id="d-none">
+        <div class="content-wrapper results">
+            <h2 class="results__title">Search Results</h2>
+            <ul class="results__list" id="resultsList">
+            </ul>
+        </div>
+    </section>
+
+    <!-- Trailer Section -->
+    <section>
+        <div class="content-wrapper">
+            <article class="carousel" data-carousel>
+                <button class="carousel__btn prev" data-carousel-btn="prev">&#8612;</button>
+                <button class="carousel__btn next" data-carousel-btn="next">&#8614;</button>
+                <ul data-slides>
+                    <li class="carousel__slide" data-active>
+                    </li>
+                    <li class="carousel__slide">
+                    </li>
+                    <li class="carousel__slide">
+                    </li>
+                    <li class="carousel__slide">
+                    </li>
+                    <li class="carousel__slide">
+                    </li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <!-- Popular movies section -->
+    <section>
+        <div class="content-wrapper popular">
+            <h1 class="popular__title">My Movie Database Top 20</h1>
+            <section class="popular__card-container" id="popularCardContainer">
+                
+                
+            </section>
+        </div>
+    </section>
+
+    <script src="./scripts/script.js"></script>
+    <script src="./scripts/movies.js"></script>
+</body>
+</html>
